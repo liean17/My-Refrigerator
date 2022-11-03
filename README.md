@@ -2,7 +2,8 @@
 냉장고 내 음식 관리 애플리케이션
 
 ### ERD
-![refrigeratorERD](https://user-images.githubusercontent.com/94332594/199695194-e8ca581e-36e2-4128-a9b7-667db976b549.png)
+
+![refrigeratorERD](https://user-images.githubusercontent.com/94332594/199696620-7367fa58-262f-49a4-8a8a-9a61c395e137.png)
 
 ### 애플리케이션 설명
 - 냉장고에 음식을 등록할 수 있습니다.
