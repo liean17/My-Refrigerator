@@ -1,5 +1,6 @@
 package com.toy.refrigerator.food.dto;
 
+import com.toy.refrigerator.food.entity.Food;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -46,6 +47,27 @@ public class FoodDto {
             this.description = description;
             this.expiration = expiration;
             this.categoryCode = categoryCode;
+        }
+    }
+
+    @Getter
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    public static class Response{
+        private String name;
+        private String description;
+        private LocalDateTime registration;
+        private LocalDateTime expiration;
+        private Food.Category category;
+        private Food.FoodStatus status;
+
+        @Builder
+        public Response(String name, String description, LocalDateTime registration, LocalDateTime expiration, Food.Category category, Food.FoodStatus status) {
+            this.name = name;
+            this.description = description;
+            this.registration = registration;
+            this.expiration = expiration;
+            this.category = category;
+            this.status = status;
         }
     }
 }

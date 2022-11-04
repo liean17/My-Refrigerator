@@ -24,7 +24,9 @@ public class Food {
     private Category category;
     @Enumerated(value = EnumType.STRING)
     private FoodStatus foodStatus = FoodStatus.FRESH;
-    //private Image image;
+    //private String imgUrl;
+    //@ManyToOne
+    //private Sector sector;
 
     public enum FoodStatus{
         FRESH(1,"신선함"),
