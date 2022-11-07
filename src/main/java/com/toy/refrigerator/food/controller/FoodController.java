@@ -1,7 +1,7 @@
 package com.toy.refrigerator.food.controller;
 
 import com.toy.refrigerator.food.dto.FoodDto;
-import com.toy.refrigerator.food.service.FoodService;
+import com.toy.refrigerator.food.service.FoodServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class FoodController {
 
-    private final FoodService foodService;
+    private final FoodServiceImpl foodService;
 
     //음식 등록
     @PostMapping("/add")

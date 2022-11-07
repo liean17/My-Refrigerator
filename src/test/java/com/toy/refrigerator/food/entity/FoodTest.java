@@ -40,4 +40,10 @@ class FoodTest {
         assertThat(kimchi.getExpiration()).isAfter(LocalDateTime.now());
     }
 
+    @Test
+    void 카테고리(){
+        int length = Food.Category.values().length;
+        System.out.println(length);
+    }
+
 }

@@ -24,6 +24,7 @@ public class Food {
     private Category category;
     @Enumerated(value = EnumType.STRING)
     private FoodStatus foodStatus = FoodStatus.FRESH;
+
     //private String imgUrl;
     //@ManyToOne
     //private Sector sector;
@@ -67,6 +68,10 @@ public class Food {
             this.categoryCode = categoryCode;
             this.description = description;
         }
+
+        public int code(){
+            return categoryCode;
+        }
     }
 
     @Builder
@@ -84,6 +89,11 @@ public class Food {
         this.expiration = patchDto.getExpiration();
         //카테고리는 서비스에서 변경하자.
     }
+
+    public void setExpiration(LocalDateTime time){
+        this.expiration = time;
+    }
+
 
     public void changeStatus(FoodStatus status){
         this.foodStatus = status;

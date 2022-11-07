@@ -42,7 +42,7 @@ class FoodRepositoryTest {
         foodRepository.save(kimchi);
 
         //when
-        Food findById = foodRepository.findById(1L).orElseThrow();
+        Food findById = foodRepository.findById(2L).orElseThrow();
 
 
         //then
