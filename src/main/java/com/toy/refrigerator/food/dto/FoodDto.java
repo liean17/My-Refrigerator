@@ -53,6 +53,7 @@ public class FoodDto {
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class Response{
+        private Long foodId;
         private String name;
         private String description;
         private LocalDateTime registration;
@@ -61,7 +62,8 @@ public class FoodDto {
         private Food.FoodStatus status;
 
         @Builder
-        public Response(String name, String description, LocalDateTime registration, LocalDateTime expiration, Food.Category category, Food.FoodStatus status) {
+        public Response(Long foodId, String name, String description, LocalDateTime registration, LocalDateTime expiration, Food.Category category, Food.FoodStatus status) {
+            this.foodId = foodId;
             this.name = name;
             this.description = description;
             this.registration = registration;

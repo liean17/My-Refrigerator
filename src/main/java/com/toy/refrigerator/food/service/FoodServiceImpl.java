@@ -4,13 +4,18 @@ import com.toy.refrigerator.food.dto.FoodDto;
 import com.toy.refrigerator.food.entity.Food;
 import com.toy.refrigerator.food.repository.FoodQueryRepository;
 import com.toy.refrigerator.food.repository.FoodRepository;
+import com.toy.refrigerator.food.repository.FoodSearchCond;
 import com.toy.refrigerator.utils.multidto.MultiResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -32,29 +37,42 @@ public class FoodServiceImpl implements FoodService{
             Food.FoodStatus status = setFoodStatus(food.getRegistration(), food.getExpiration());
             food.changeStatus(status);
         }
+
         //저장
         Food saved = repository.save(food);
 
         return mappingToResponse(saved);
     }
-
+    //Todo 예이예이예외처리예이예어어어컴온
     @Override
     public FoodDto.Response getFood(Long foodId) {
-        return null;
+        Food food = repository.findById(foodId).orElseThrow();
+        return mappingToResponse(food);
     }
 
     @Override
-    public MultiResponseDto<FoodDto.Response> getAllFood() {
-        return null;
+    public MultiResponseDto<FoodDto.Response> getAllFood(PageRequest pageRequest, FoodSearchCond cond) {
+        Page<Food> allWithCond = queryRepository.findAllWithCond(cond, pageRequest);
+        List<FoodDto.Response> responseList = allWithCond.getContent().stream()
+                .map(this::mappingToResponse)
+                .collect(Collectors.toList());
+
+        return new MultiResponseDto<>(responseList,allWithCond);
     }
 
     @Override
     public FoodDto.Response editFood(Long foodId, FoodDto.Patch patchDto) {
-        return null;
+        Food food = repository.findById(foodId).orElseThrow();
+        Food.Category category = getCategory(patchDto.getCategoryCode());
+        food.update(patchDto,category);
+
+        return mappingToResponse(food);
     }
 
     @Override
     public void deleteFood(Long foodId) {
+        repository.findById(foodId).orElseThrow()
+                .changeStatus(Food.FoodStatus.CONSUMED);
     }
 
     public FoodDto.Response findByName(String name) {
@@ -82,6 +100,7 @@ public class FoodServiceImpl implements FoodService{
 
     private FoodDto.Response mappingToResponse(Food food){
         FoodDto.Response response = FoodDto.Response.builder()
+                .foodId(food.getId())
                 .name(food.getName())
                 .description(food.getDescription())
                 .registration(food.getRegistration())

@@ -1,8 +1,11 @@
 package com.toy.refrigerator.food.controller;
 
 import com.toy.refrigerator.food.dto.FoodDto;
+import com.toy.refrigerator.food.repository.FoodSearchCond;
 import com.toy.refrigerator.food.service.FoodServiceImpl;
+import com.toy.refrigerator.utils.multidto.MultiResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +33,17 @@ public class FoodController {
         return "foods/food";
     }
 
+    @GetMapping
+    public String getAllFood(
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "size", defaultValue = "10") int size
+            ,Model model, FoodSearchCond cond) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        MultiResponseDto<FoodDto.Response> allFood = foodService.getAllFood(pageRequest, cond);
+        model.addAttribute("foods",allFood);
+        return "foods/foods";
+    }
+
     //음식 정보 수정
     @GetMapping("/edit/{foodId}")
     public String getEditFood(@PathVariable Long foodId,Model model){
@@ -37,6 +51,7 @@ public class FoodController {
         model.addAttribute("food",foodResponse);
         return "foods/editForm";
     }
+
     //Todo API
     @PostMapping("/edit/{foodId}")
     public String patchFood(@PathVariable Long foodId,@RequestBody FoodDto.Patch patchDto,Model model){

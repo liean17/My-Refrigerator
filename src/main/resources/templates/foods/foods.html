@@ -1,0 +1,63 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8">
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+</head>
+<body>
+
+<div class="container" style="max-width: 600px">
+    <div class="py-5 text-center">
+        <h2>나의 냉장고</h2>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <button class="btn btn-primary float-end"
+                    onclick="location.href='loginForm.html'"
+                    th:onclick="|location.href='@{/login}'|"
+                    type="button">로그인</button>
+        </div>
+        <div class="col">
+            <button class="btn btn-primary float-end"
+                    onclick="location.href='signupForm.html'"
+                    th:onclick="|location.href='@{/signup}'|"
+                    type="button">회원가입</button>
+        </div>
+        <div class="col">
+            <button class="btn btn-primary float-end"
+                    onclick="location.href='addPost.html'"
+                    th:onclick="|location.href='@{/posts/add}'|"
+                    type="button">항목 등록</button>
+        </div>
+    </div>
+
+    <hr class="my-4">
+    <div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>분류</th>
+                <th>이름</th>
+                <th>설명</th>
+                <th>상태</th>
+                <th>등록일</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <tr th:each="food : ${foods.getData()}">
+                <td><a th:text="${food.category}">분류</a></td>
+                <td><a th:text="${food.name}">이름</a></td>
+                <td><a th:text="${food.description}">설명</a></td>
+                <td><a th:text="${food.status}">상태</a></td>
+                <td th:text="${#temporals.format(food.registration, 'MM-dd HH:mm:ss')}">등록일</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div> <!-- /container -->
+
+</body>
+</html>

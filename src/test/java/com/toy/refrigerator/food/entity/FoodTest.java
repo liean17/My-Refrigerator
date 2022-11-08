@@ -33,7 +33,7 @@ class FoodTest {
 
         kimchi.changeStatus(Food.FoodStatus.CONSUMED);
 
-        kimchi.update(patchDto);
+        kimchi.update(patchDto,null);
         //then
         assertThat(kimchi.getFoodStatus()).isEqualTo(Food.FoodStatus.CONSUMED);
         assertThat(kimchi.getDescription()).isEqualTo("깍두기");

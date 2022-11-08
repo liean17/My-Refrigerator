@@ -83,11 +83,11 @@ public class Food {
         this.category = category;
     }
 
-    public void update(FoodDto.Patch patchDto){
+    public void update(FoodDto.Patch patchDto,Category category){
         this.name = patchDto.getName();
         this.description = patchDto.getDescription();
         this.expiration = patchDto.getExpiration();
-        //카테고리는 서비스에서 변경하자.
+        this.category = category;
     }
 
     public void setExpiration(LocalDateTime time){
