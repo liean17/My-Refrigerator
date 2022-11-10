@@ -1,6 +1,7 @@
 package com.toy.refrigerator.food.entity;
 
 import com.toy.refrigerator.food.dto.FoodDto;
+import com.toy.refrigerator.sector.entity.Sectors;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,8 +27,9 @@ public class Food {
     private FoodStatus foodStatus = FoodStatus.FRESH;
 
     //private String imgUrl;
-    //@ManyToOne
-    //private Sector sector;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sector_id")
+    private Sectors sectors;
 
     public enum FoodStatus{
         FRESH(1,"신선함"),
