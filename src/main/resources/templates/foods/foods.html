@@ -26,8 +26,8 @@
         </div>
         <div class="col">
             <button class="btn btn-primary float-end"
-                    onclick="location.href='addPost.html'"
-                    th:onclick="|location.href='@{/posts/add}'|"
+                    onclick="location.href='addFood.html'"
+                    th:onclick="|location.href='@{/foods/add}'|"
                     type="button">항목 등록</button>
         </div>
     </div>
@@ -51,7 +51,7 @@
                 <td><a th:text="${food.name}">이름</a></td>
                 <td><a th:text="${food.description}">설명</a></td>
                 <td><a th:text="${food.status}">상태</a></td>
-                <td th:text="${#temporals.format(food.registration, 'MM-dd HH:mm:ss')}">등록일</td>
+                <td th:text="${food.expiration}">등록일</td>
             </tr>
             </tbody>
         </table>

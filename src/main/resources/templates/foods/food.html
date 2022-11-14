@@ -1,0 +1,93 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <style>
+        .container {
+            max-width: 560px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="py-5 text-center">
+        <h2 th:text="${food.name}">음식 등록</h2>
+    </div>
+
+    <form th:method="post">
+        <div class="row">
+            <div class="col">
+                <button class="btn btn-primary float-end" style="background-color: crimson"
+                        type="submit">삭제
+                </button>
+            </div>
+        </div>
+    </form>
+
+
+    <!-- 추가 -->
+    <div>
+        <label for="name">이름</label>
+        <input type="text" id="name" name="name" class="form-control" value="이름"
+               th:value="${food.name}"
+               readonly>
+    </div>
+    <div>
+        <label for="description">설명</label>
+        <input type="text" id="description" name="description" class="form-control" value="설명"
+               th:value="${food.description}"
+               readonly>
+    </div>
+    <div>
+        <label for="registration">등록일</label>
+        <input type="date" id="registration" name="createdAt" class="form-control" value="등록일"
+               th:value="${food.registration}" readonly>
+    </div>
+    <div>
+        <label for="expiration">유통기한</label>
+        <input type="date" id="expiration" name="expiration" class="form-control" value="유통기한"
+               th:value="${food.expiration}" readonly>
+    </div>
+    <div>
+        <label for="category">카테고리</label>
+        <input type="text" id="category" name="category" class="form-control" value="카테고리" th:value="${food.category.description}"
+               readonly>
+    </div>
+    <div>
+        <label for="status">상태</label>
+        <input type="text" id="status" name="status" class="form-control" value="상태" th:value="${food.status.description}"
+               readonly>
+    </div>
+<!--    <div>-->
+<!--        <div>사진</div>-->
+<!--        <a th:each="img : ${post.getImages()}">-->
+<!--            <img th:if="${img.getStoreFilename()}" th:src="${img.getStoreFilename()}" width="500" height="500"/>-->
+<!--        </a>-->
+<!--    </div>-->
+
+    <hr class="my-4">
+
+    <br/>
+    <div class="row">
+        <div class="col">
+            <button class="w-100 btn btn-primary btn-lg"
+                    onclick="location.href='editPost.html'"
+                    th:onclick="|location.href='@{/foods/edit/{foodId}(foodId=${food.getFoodId})}'|"
+                    type="button">정보 수정
+            </button>
+        </div>
+        <div class="col">
+            <button class="w-100 btn btn-secondary btn-lg"
+                    onclick="location.href='foods.html'"
+                    th:onclick="|location.href='@{/foods}'|"
+                    type="button">목록으로
+            </button>
+        </div>
+    </div>
+
+</div> <!-- /container -->
+</body>
+</html>
