@@ -1,6 +1,7 @@
 package com.toy.refrigerator.food.controller;
 
 import com.toy.refrigerator.food.dto.FoodDto;
+import com.toy.refrigerator.food.entity.Food;
 import com.toy.refrigerator.food.repository.FoodSearchCond;
 import com.toy.refrigerator.food.service.FoodServiceImpl;
 import com.toy.refrigerator.utils.multidto.MultiResponseDto;
@@ -10,16 +11,28 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+
 @Controller
-@RequestMapping("/food")
+@RequestMapping("/foods")
 @RequiredArgsConstructor
 public class FoodController {
 
     private final FoodServiceImpl foodService;
 
+    @ModelAttribute("categories")
+    public Food.Category[] categories() {
+        return Arrays.stream(Food.Category.values()).toArray(Food.Category[]::new);
+    }
+
     //음식 등록
+    @GetMapping("/add")
+    public String getAddForm(){
+        return "foods/addFood";
+    }
+
     @PostMapping("/add")
-    public String addFood(@RequestBody FoodDto.Post postDto, Model model){
+    public String addFood(FoodDto.Post postDto, Model model){
         FoodDto.Response foodResponse = foodService.saveFood(postDto);
         model.addAttribute("food",foodResponse);
         return "foods/food";
@@ -49,7 +62,7 @@ public class FoodController {
     public String getEditFood(@PathVariable Long foodId,Model model){
         FoodDto.Response foodResponse = foodService.getFood(foodId);
         model.addAttribute("food",foodResponse);
-        return "foods/editForm";
+        return "editFood";
     }
 
     //Todo API

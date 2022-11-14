@@ -46,6 +46,14 @@ public class Food {
             this.statusCode = statusCode;
             this.description = description;
         }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public int getStatusCode() {
+            return statusCode;
+        }
     }
 
     public enum Category{
@@ -69,6 +77,10 @@ public class Food {
         Category(int categoryCode, String description) {
             this.categoryCode = categoryCode;
             this.description = description;
+        }
+
+        public String getDescription() {
+            return description;
         }
 
         public int code(){
