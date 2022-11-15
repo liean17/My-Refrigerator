@@ -35,7 +35,8 @@ public class FoodServiceImpl implements FoodService{
 
         //유통기한을 지정했다면
         if (postDto.getExpiration()!=null){
-            food.setExpiration(postDto.getExpiration());
+            LocalDateTime expirations = LocalDateTime.parse(postDto.getExpiration());
+            food.setExpiration(expirations);
 
             Food.FoodStatus status = setFoodStatus(food.getRegistration(), food.getExpiration());
             food.changeStatus(status);
@@ -56,6 +57,7 @@ public class FoodServiceImpl implements FoodService{
     @Override
     public MultiResponseDto<FoodDto.Response> getAllFood(PageRequest pageRequest, FoodSearchCond cond,Long sectorId) {
         Page<Food> allWithCond = queryRepository.findAllWithCond(cond, pageRequest);
+
         List<FoodDto.Response> responseList = allWithCond.getContent().stream()
                 .filter(f->f.getSectors().getId()==sectorId)
                 .map(this::mappingToResponse)

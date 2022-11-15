@@ -1,6 +1,7 @@
 package com.toy.refrigerator.food.controller;
 
 import com.toy.refrigerator.food.dto.FoodDto;
+import com.toy.refrigerator.food.entity.Food;
 import com.toy.refrigerator.food.repository.FoodSearchCond;
 import com.toy.refrigerator.food.service.FoodServiceImpl;
 import com.toy.refrigerator.utils.multidto.MultiResponseDto;
@@ -10,6 +11,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+import java.util.List;
+
 @Controller
 @RequestMapping("/foods")
 @RequiredArgsConstructor
@@ -17,14 +21,19 @@ public class FoodController {
 
     private final FoodServiceImpl foodService;
 
+    @ModelAttribute("categories")
+    public Food.Category[] categories() {
+        return Arrays.stream(Food.Category.values()).toArray(Food.Category[]::new);
+    }
+
     //음식 등록
-    @GetMapping("/{sectorId}/add")
+    @GetMapping("/add")
     public String getAddForm(){
         return "foods/addFood";
     }
 
-    @PostMapping("/{sectorId}/add")
-    public String addFood(@RequestBody FoodDto.Post postDto,@PathVariable Long sectorId, Model model){
+    @PostMapping("{sectorId}/add")
+    public String addFood(FoodDto.Post postDto,@PathVariable Long sectorId, Model model){
         FoodDto.Response foodResponse = foodService.saveFood(postDto,sectorId);
         model.addAttribute("food",foodResponse);
         return "foods/food";

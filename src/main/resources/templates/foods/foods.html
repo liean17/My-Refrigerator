@@ -47,11 +47,11 @@
             <tbody>
 
             <tr th:each="food : ${foods.getData()}">
-                <td><a th:text="${food.category}">분류</a></td>
+                <td><a th:text="${food.category.description}">분류</a></td>
                 <td><a th:text="${food.name}">이름</a></td>
                 <td><a th:text="${food.description}">설명</a></td>
-                <td><a th:text="${food.status}">상태</a></td>
-                <td th:text="${#temporals.format(food.registration, 'MM-dd HH:mm:ss')}">등록일</td>
+                <td><a th:text="${food.status.description}">상태</a></td>
+                <td th:text="${#temporals.format(food.expiration, 'YYYY년 MM월 dd일')}">등록일</td>
             </tr>
             </tbody>
         </table>
