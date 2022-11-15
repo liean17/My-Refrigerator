@@ -2,6 +2,9 @@ package com.toy.refrigerator.food.service;
 
 import com.toy.refrigerator.food.dto.FoodDto;
 import com.toy.refrigerator.food.entity.Food;
+import com.toy.refrigerator.sector.entity.Sectors;
+import com.toy.refrigerator.sector.repository.SectorRepository;
+import com.toy.refrigerator.sector.service.SectorService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -15,6 +18,8 @@ import static org.assertj.core.api.Assertions.*;
 class FoodServiceTest {
     @Autowired
     private FoodServiceImpl foodService;
+    @Autowired
+    private SectorService sectorService;
 
     FoodDto.Post postDto = FoodDto.Post.builder()
             .name("김치")
@@ -24,9 +29,10 @@ class FoodServiceTest {
 
     @Test
     void 음식등록및조회(){
+        sectorService.createSector();
 
         //when
-        FoodDto.Response response = foodService.saveFood(postDto);
+        FoodDto.Response response = foodService.saveFood(postDto,1L);
         FoodDto.Response findByName = foodService.findByName(response.getName());
 
         //then
@@ -46,7 +52,8 @@ class FoodServiceTest {
                 .build();
 
         //when
-        foodService.saveFood(postDto);
+        sectorService.createSector();
+        foodService.saveFood(postDto,1L);
         FoodDto.Response editFood = foodService.editFood(1L, patchDto);
 
         FoodDto.Response findFood = foodService.getFood(1L);
@@ -60,7 +67,8 @@ class FoodServiceTest {
     @Test
     void 삭제테스트(){
         //when
-        foodService.saveFood(postDto);
+        sectorService.createSector();
+        foodService.saveFood(postDto,1L);
         foodService.deleteFood(1L);
 
         FoodDto.Response findFood = foodService.getFood(1L);

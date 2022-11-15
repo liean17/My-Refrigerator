@@ -18,11 +18,11 @@ public class SectorController {
     @GetMapping
     public String getSectors(Model model){
         MultiResponseDto<SectorDto.Response> all = sectorService.getAll();
-        model.addAttribute("sectors",all);
+        model.addAttribute("sectors",all.getData());
         return "sector/sectors";
     }
 
-    @PostMapping
+    @GetMapping("/add")
     public String addSector(){
         sectorService.createSector();
         return "redirect:/sectors";

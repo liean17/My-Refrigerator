@@ -5,6 +5,8 @@ import com.toy.refrigerator.food.entity.Food;
 import com.toy.refrigerator.food.repository.FoodQueryRepository;
 import com.toy.refrigerator.food.repository.FoodRepository;
 import com.toy.refrigerator.food.repository.FoodSearchCond;
+import com.toy.refrigerator.sector.entity.Sectors;
+import com.toy.refrigerator.sector.repository.SectorRepository;
 import com.toy.refrigerator.utils.multidto.MultiResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -22,13 +24,14 @@ import java.util.stream.Collectors;
 @Transactional
 public class FoodServiceImpl implements FoodService{
 
-    private final FoodRepository repository;
+    private final FoodRepository foodRepository;
+    private final SectorRepository sectorRepository;
     private final FoodQueryRepository queryRepository;
 
     @Override
-    public FoodDto.Response saveFood(FoodDto.Post postDto) {
+    public FoodDto.Response saveFood(FoodDto.Post postDto,Long sectorId) {
 
-        Food food = dtoToFood(postDto);
+        Food food = dtoToFood(postDto,sectorId);
 
         //유통기한을 지정했다면
         if (postDto.getExpiration()!=null){
@@ -39,21 +42,22 @@ public class FoodServiceImpl implements FoodService{
         }
 
         //저장
-        Food saved = repository.save(food);
+        Food saved = foodRepository.save(food);
 
         return mappingToResponse(saved);
     }
     //Todo 예이예이예외처리예이예어어어컴온
     @Override
     public FoodDto.Response getFood(Long foodId) {
-        Food food = repository.findById(foodId).orElseThrow();
+        Food food = foodRepository.findById(foodId).orElseThrow();
         return mappingToResponse(food);
     }
 
     @Override
-    public MultiResponseDto<FoodDto.Response> getAllFood(PageRequest pageRequest, FoodSearchCond cond) {
+    public MultiResponseDto<FoodDto.Response> getAllFood(PageRequest pageRequest, FoodSearchCond cond,Long sectorId) {
         Page<Food> allWithCond = queryRepository.findAllWithCond(cond, pageRequest);
         List<FoodDto.Response> responseList = allWithCond.getContent().stream()
+                .filter(f->f.getSectors().getId()==sectorId)
                 .map(this::mappingToResponse)
                 .collect(Collectors.toList());
 
@@ -62,7 +66,7 @@ public class FoodServiceImpl implements FoodService{
 
     @Override
     public FoodDto.Response editFood(Long foodId, FoodDto.Patch patchDto) {
-        Food food = repository.findById(foodId).orElseThrow();
+        Food food = foodRepository.findById(foodId).orElseThrow();
         Food.Category category = getCategory(patchDto.getCategoryCode());
         food.update(patchDto,category);
 
@@ -71,16 +75,16 @@ public class FoodServiceImpl implements FoodService{
 
     @Override
     public void deleteFood(Long foodId) {
-        repository.findById(foodId).orElseThrow()
+        foodRepository.findById(foodId).orElseThrow()
                 .changeStatus(Food.FoodStatus.CONSUMED);
     }
 
     public FoodDto.Response findByName(String name) {
-        Food food = repository.findByName(name);
+        Food food = foodRepository.findByName(name);
         return mappingToResponse(food);
     }
 
-    private Food dtoToFood(FoodDto.Post postDto) {
+    private Food dtoToFood(FoodDto.Post postDto, Long sectorId) {
         int categoryCode = postDto.getCategoryCode();
 
         int length = Food.Category.values().length;
@@ -90,10 +94,13 @@ public class FoodServiceImpl implements FoodService{
             category = getCategory(categoryCode);
         }
 
+        Sectors sectors = sectorRepository.findById(sectorId).orElseThrow();
+
         Food food = Food.builder()
                 .name(postDto.getName())
                 .description(postDto.getDescription())
                 .category(category)
+                .sectors(sectors)
                 .build();
         return food;
     }
