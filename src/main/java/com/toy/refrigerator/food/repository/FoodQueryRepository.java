@@ -4,7 +4,6 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.toy.refrigerator.food.entity.Food;
-import com.toy.refrigerator.food.entity.QFood;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.support.PageableExecutionUtils;
@@ -32,12 +31,11 @@ public class FoodQueryRepository {
     }
 
     public List<Food> getFindAllQuery(FoodSearchCond cond,PageRequest pageRequest){
-        return query.select(food)
+        return query
+                .select(food)
                 .from(food)
-                .where(
-                        likeFoodName(cond.getName()),
-                        food.foodStatus.ne(Food.FoodStatus.CONSUMED)
-                )
+                .where(likeFoodName(cond.getName()),
+                        food.foodStatus.ne(Food.FoodStatus.CONSUMED))
                 .offset(pageRequest.getOffset())
                 .limit(pageRequest.getPageSize())
                 .fetch();
