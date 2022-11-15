@@ -27,8 +27,8 @@
         <div class="col">
             <button class="btn btn-primary float-end"
                     onclick="location.href='addPost.html'"
-                    th:onclick="|location.href='@{/foods/add/}'|"
-                    type="button">항목 등록</button>
+                    th:onclick="|location.href='@{/sectors/add}'|"
+                    type="button">칸 등록</button>
         </div>
     </div>
 
@@ -37,21 +37,17 @@
         <table class="table">
             <thead>
             <tr>
-                <th>분류</th>
                 <th>이름</th>
-                <th>설명</th>
-                <th>상태</th>
-                <th>등록일</th>
+                <th>이름 수정하기</th>
+                <th>칸 삭제하기</th>
             </tr>
             </thead>
             <tbody>
 
-            <tr th:each="food : ${foods.getData()}">
-                <td><a th:text="${food.category.description}">분류</a></td>
-                <td><a th:text="${food.name}">이름</a></td>
-                <td><a th:text="${food.description}">설명</a></td>
-                <td><a th:text="${food.status.description}">상태</a></td>
-                <td th:text="${#temporals.format(food.expiration, 'YYYY년 MM월 dd일')}">등록일</td>
+            <tr th:each="sector : ${sectors}">
+                <td><a th:href="@{|/foods/${sector.sectorId}|}" th:text="${sector.name}">이름</a></td>
+                <td><a th:href="@{|/sectors/edit/${sector.sectorId}|}"}>수정</a></td>
+                <td><a th:href="@{|/sectors/delete/${sector.sectorId}|}"}>삭제</a></td>
             </tr>
             </tbody>
         </table>

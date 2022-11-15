@@ -89,12 +89,13 @@ public class Food {
     }
 
     @Builder
-    public Food(Long id, String name, String description, LocalDateTime expiration, Category category, FoodStatus foodStatus) {
+    public Food(Long id, String name, String description, LocalDateTime expiration, Category category,Sectors sectors,FoodStatus foodStatus) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.expiration = expiration;
         this.category = category;
+        this.sectors = sectors;
     }
 
     public void update(FoodDto.Patch patchDto,Category category){

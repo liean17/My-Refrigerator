@@ -5,6 +5,7 @@ import com.toy.refrigerator.sector.entity.Sectors;
 import com.toy.refrigerator.sector.repository.SectorRepository;
 import com.toy.refrigerator.utils.multidto.MultiResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,7 +40,8 @@ public class SectorService {
     public MultiResponseDto<SectorDto.Response> getAll() {
         List<Sectors> sectorsList = repository.findAll();
         List<SectorDto.Response> responseList = sectorsList.stream().map(this::mappingToResponse).collect(Collectors.toList());
-        return new MultiResponseDto<>(responseList,null);
+        //Todo page 가 null 이면 오류남. 그렇다고 저래도 되는가
+        return new MultiResponseDto<>(responseList,new PageImpl(responseList));
     }
 
     private SectorDto.Response mappingToResponse(Sectors sectors){
