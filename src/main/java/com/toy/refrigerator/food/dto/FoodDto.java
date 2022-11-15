@@ -20,12 +20,12 @@ public class FoodDto {
         private String name;
         private String description;
         @DateTimeFormat(pattern = "yyyy-MM-dd 'T' HH:mm:ss")
-        private LocalDateTime expiration;
+        private String expiration;
         @NotNull(message = "카테고리를 지정해주세요")
         private int categoryCode;
 
         @Builder
-        public Post(String name, String description, LocalDateTime expiration, int categoryCode) {
+        public Post(String name, String description, String expiration, int categoryCode) {
             this.name = name;
             this.description = description;
             this.expiration = expiration;
@@ -39,12 +39,12 @@ public class FoodDto {
         @NotBlank(message = "이름을 입력해주세요")
         private String name;
         private String description;
-        private LocalDateTime expiration;
+        private String expiration;
         @NotNull(message = "카테고리를 지정해주세요")
         private int categoryCode;
 
         @Builder
-        public Patch(String name, String description, LocalDateTime expiration, int categoryCode) {
+        public Patch(String name, String description, String expiration, int categoryCode) {
             this.name = name;
             this.description = description;
             this.expiration = expiration;

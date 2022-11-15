@@ -100,7 +100,7 @@ public class Food {
     public void update(FoodDto.Patch patchDto,Category category){
         this.name = patchDto.getName();
         this.description = patchDto.getDescription();
-        this.expiration = patchDto.getExpiration();
+        this.expiration = LocalDateTime.parse(patchDto.getExpiration());
         this.category = category;
     }
 

@@ -43,13 +43,13 @@
     </div>
     <div>
         <label for="registration">등록일</label>
-        <input type="date" id="registration" name="createdAt" class="form-control" value="등록일"
-               th:value="${food.registration}" readonly>
+        <input type="text" id="registration" name="createdAt" class="form-control" value="등록일"
+               th:value="${#temporals.format(food.registration, 'YYYY년 MM월 dd일 HH:mm:ss')}" readonly>
     </div>
     <div>
         <label for="expiration">유통기한</label>
-        <input type="date" id="expiration" name="expiration" class="form-control" value="유통기한"
-               th:value="${food.expiration}" readonly>
+        <input type="text" id="expiration" name="expiration" class="form-control" value="유통기한"
+               th:value="${#temporals.format(food.expiration, 'YYYY년 MM월 dd일 HH:mm:ss')}" readonly>
     </div>
     <div>
         <label for="category">카테고리</label>

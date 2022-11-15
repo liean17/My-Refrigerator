@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.List;
 
 @Controller
 @RequestMapping("/foods")
@@ -51,9 +52,9 @@ public class FoodController {
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "size", defaultValue = "10") int size
             ,Model model, FoodSearchCond cond) {
-        PageRequest pageRequest = PageRequest.of(page, size);
+        PageRequest pageRequest = PageRequest.of(page-1, size);
         MultiResponseDto<FoodDto.Response> allFood = foodService.getAllFood(pageRequest, cond);
-        model.addAttribute("foods",allFood);
+        model.addAttribute("foods",allFood.getData());
         return "foods/foods";
     }
 
