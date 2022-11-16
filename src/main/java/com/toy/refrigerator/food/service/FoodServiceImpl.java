@@ -59,7 +59,7 @@ public class FoodServiceImpl implements FoodService{
         Page<Food> allWithCond = queryRepository.findAllWithCond(cond, pageRequest);
 
         List<FoodDto.Response> responseList = allWithCond.getContent().stream()
-                .filter(f->f.getSectors().getId()==sectorId)
+                .filter(food -> food.getSectors().getId()==sectorId)
                 .map(this::mappingToResponse)
                 .collect(Collectors.toList());
 
@@ -116,6 +116,7 @@ public class FoodServiceImpl implements FoodService{
                 .expiration(food.getExpiration())
                 .category(food.getCategory())
                 .status(food.getFoodStatus())
+                .sectorId(food.getSectors().getId())
                 .build();
         return response;
     }

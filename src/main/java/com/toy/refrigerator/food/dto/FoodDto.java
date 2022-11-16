@@ -62,9 +62,10 @@ public class FoodDto {
         private LocalDateTime expiration;
         private Food.Category category;
         private Food.FoodStatus status;
+        private Long sectorId;
 
         @Builder
-        public Response(Long foodId, String name, String description, LocalDateTime registration, LocalDateTime expiration, Food.Category category, Food.FoodStatus status) {
+        public Response(Long foodId, String name, String description, LocalDateTime registration, LocalDateTime expiration, Food.Category category, Food.FoodStatus status,Long sectorId) {
             this.foodId = foodId;
             this.name = name;
             this.description = description;
@@ -72,6 +73,7 @@ public class FoodDto {
             this.expiration = expiration;
             this.category = category;
             this.status = status;
+            this.sectorId = sectorId;
         }
     }
 }

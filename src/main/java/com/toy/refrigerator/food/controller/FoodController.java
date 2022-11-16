@@ -27,16 +27,17 @@ public class FoodController {
     }
 
     //음식 등록
-    @GetMapping("/add")
-    public String getAddForm(){
+    @GetMapping("/add/{sectorId}")
+    public String getAddForm(@PathVariable Long sectorId,Model model){
+        model.addAttribute("sectorId",sectorId);
         return "foods/addFood";
     }
 
-    @PostMapping("{sectorId}/add")
+    @PostMapping("/add/{sectorId}")
     public String addFood(FoodDto.Post postDto,@PathVariable Long sectorId, Model model){
         FoodDto.Response foodResponse = foodService.saveFood(postDto,sectorId);
         model.addAttribute("food",foodResponse);
-        return "foods/food";
+        return "redirect:/foods/sector/"+sectorId;
     }
 
     //음식 조회
@@ -52,7 +53,7 @@ public class FoodController {
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "size", defaultValue = "10") int size,
                              Model model, FoodSearchCond cond) {
-        PageRequest pageRequest = PageRequest.of(page, size);
+        PageRequest pageRequest = PageRequest.of(page-1, size);
         MultiResponseDto<FoodDto.Response> allFood = foodService.getAllFood(pageRequest, cond,sectorId);
         model.addAttribute("foods",allFood);
         return "foods/foods";

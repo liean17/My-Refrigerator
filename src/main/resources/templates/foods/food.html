@@ -82,7 +82,7 @@
         <div class="col">
             <button class="w-100 btn btn-secondary btn-lg"
                     onclick="location.href='foods.html'"
-                    th:onclick="|location.href='@{/foods}'|"
+                    th:onclick="|location.href='@{/foods/{sectorId}(sectorId=${food.getSectorId})}'|"
                     type="button">목록으로
             </button>
         </div>
