@@ -14,13 +14,20 @@
 <div class="container">
     <form action="sectors.html" th:action method="post" enctype="multipart/form-data">
         <div class="py-5 text-center">
-            <h2>칸 이름 변경</h2>
+            <h2>칸 정보 수정</h2>
         </div>
 
         <div>
             <label for="name">이름</label>
             <input type="text" id="name" name="name" class="form-control">
         </div>
+        <div>종류</div>
+        <label>
+            <select name="type" class="form-select">
+                <option th:each="type : ${types}" th:value="${type.name()}"
+                        th:text="${type.description}"></option>
+            </select>
+        </label>
 
         <hr class="my-4">
 

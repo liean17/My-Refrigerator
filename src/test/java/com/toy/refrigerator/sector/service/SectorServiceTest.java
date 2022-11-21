@@ -1,5 +1,6 @@
 package com.toy.refrigerator.sector.service;
 
+import com.toy.refrigerator.sector.dto.SectorDto;
 import com.toy.refrigerator.sector.entity.Sectors;
 import com.toy.refrigerator.sector.repository.SectorRepository;
 import org.assertj.core.api.Assertions;
@@ -30,9 +31,12 @@ class SectorServiceTest {
     }
     @Test
     void 섹터수정(){
+        //given
+        SectorDto.Patch patch = new SectorDto.Patch("수정될이름",Sectors.Type.FREEZER.name());
+
         //when
         sectorService.createSector();
-        sectorService.editSector(1L,"수정될이름");
+        sectorService.editSector(1L,patch);
         Sectors findSector = repository.findById(1L).orElseThrow();
         //then
         Assertions.assertThat(findSector.getName()).isEqualTo("수정될이름");

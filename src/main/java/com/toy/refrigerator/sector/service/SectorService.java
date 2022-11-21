@@ -20,7 +20,9 @@ public class SectorService {
     private final SectorRepository repository;
 
     public void createSector() {
-        repository.save(new Sectors());
+        Sectors sector = new Sectors();
+        System.out.println("sector = " + sector.getType());
+        repository.save(sector);
     }
 
     public SectorDto.Response getSector(Long id){
@@ -28,9 +30,10 @@ public class SectorService {
         return mappingToResponse(sectors);
     }
 
-    public void editSector(Long sectorId,String name) {
+    public void editSector(Long sectorId,SectorDto.Patch patchDto) {
         Sectors sectors = repository.findById(sectorId).orElseThrow();
-        sectors.editName(name);
+        Sectors.Type type = Sectors.Type.valueOf(patchDto.getType());
+        sectors.editSector(patchDto.getName(),type);
     }
 
     public void deleteSector(Long sectorId) {
@@ -48,6 +51,7 @@ public class SectorService {
         SectorDto.Response response = SectorDto.Response.builder()
                 .sectorId(sectors.getId())
                 .name(sectors.getName())
+                .type(sectors.getType())
                 .build();
         return response;
     }

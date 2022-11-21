@@ -1,6 +1,8 @@
 package com.toy.refrigerator.sector.controller;
 
+import com.toy.refrigerator.food.entity.Food;
 import com.toy.refrigerator.sector.dto.SectorDto;
+import com.toy.refrigerator.sector.entity.Sectors;
 import com.toy.refrigerator.sector.service.SectorService;
 import com.toy.refrigerator.utils.multidto.MultiResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -8,12 +10,19 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+
 @Controller
 @RequestMapping("/sectors")
 @RequiredArgsConstructor
 public class SectorController {
 
     private final SectorService sectorService;
+
+    @ModelAttribute("types")
+    public Sectors.Type[] types() {
+        return Arrays.stream(Sectors.Type.values()).toArray(Sectors.Type[]::new);
+    }
 
     @GetMapping
     public String getSectors(Model model){
@@ -36,8 +45,8 @@ public class SectorController {
     }
 
     @PostMapping("/edit/{sectorId}")
-    public String editSector(@PathVariable Long sectorId,String name){
-        sectorService.editSector(sectorId,name);
+    public String editSector(@PathVariable Long sectorId,SectorDto.Patch patchDto){
+        sectorService.editSector(sectorId,patchDto);
         return "redirect:/sectors";
     }
 

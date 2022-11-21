@@ -37,6 +37,7 @@
         <table class="table">
             <thead>
             <tr>
+                <th>종류</th>
                 <th>이름</th>
                 <th>이름 수정하기</th>
                 <th>칸 삭제하기</th>
@@ -45,6 +46,7 @@
             <tbody>
 
             <tr th:each="sector : ${sectors}">
+                <td><a th:text="${sector.type.description}">종류</a></td>
                 <td><a th:href="@{|/foods/${sector.sectorId}|}" th:text="${sector.name}">이름</a></td>
                 <td><a th:href="@{|/sectors/edit/${sector.sectorId}|}"}>수정</a></td>
                 <td><a th:href="@{|/sectors/delete/${sector.sectorId}|}"}>삭제</a></td>

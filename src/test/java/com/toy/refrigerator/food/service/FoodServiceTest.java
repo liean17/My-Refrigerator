@@ -76,4 +76,36 @@ class FoodServiceTest {
         assertThat(findFood.getStatus()).isEqualTo(Food.FoodStatus.CONSUMED);
 
     }
+
+    @Test
+    void 상태설정테스트(){
+
+        //given
+        FoodDto.Post postDto1 = FoodDto.Post.builder()
+                .name("김치")
+                .description("신토불이")
+                .expiration(LocalDateTime.of(2022,11,4,21,05).toString())
+                .categoryCode(10).build();
+        FoodDto.Post postDto2 = FoodDto.Post.builder()
+                .name("김치")
+                .description("신토불이")
+                .expiration(LocalDateTime.of(2022,11,22,21,05).toString())
+                .categoryCode(10).build();
+        FoodDto.Post postDto3 = FoodDto.Post.builder()
+                .name("김치")
+                .description("신토불이")
+                .expiration(LocalDateTime.of(2025,11,4,21,05).toString())
+                .categoryCode(10).build();
+        sectorService.createSector();
+        //when
+        foodService.saveFood(postDto1,1L);
+        foodService.saveFood(postDto2,1L);
+        foodService.saveFood(postDto3,1L);
+
+        //then
+        assertThat(foodService.getFood(1L).getStatus()).isEqualTo(Food.FoodStatus.EXPIRED);
+        assertThat(foodService.getFood(2L).getStatus()).isEqualTo(Food.FoodStatus.IMMINENT);
+        assertThat(foodService.getFood(3L).getStatus()).isEqualTo(Food.FoodStatus.NORMAL);
+
+    }
 }
