@@ -19,6 +19,7 @@ public class SectorService {
 
     private final SectorRepository repository;
 
+    //TODO 회원정보입력
     public void createSector() {
         Sectors sector = new Sectors();
         System.out.println("sector = " + sector.getType());

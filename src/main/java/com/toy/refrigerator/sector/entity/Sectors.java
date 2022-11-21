@@ -1,6 +1,7 @@
 package com.toy.refrigerator.sector.entity;
 
 import com.toy.refrigerator.food.entity.Food;
+import com.toy.refrigerator.member.entity.Members;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,14 +18,17 @@ public class Sectors {
     private Long id;
     private String name = "새로운 칸";
     private Type type = Type.FRIDGE;
-    //private Member member;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Members member;
     @OneToMany(mappedBy = "sectors",cascade = CascadeType.ALL)
     private List<Food> foodList = new ArrayList<>();
 
     @Builder
-    public Sectors(Long id, String name, List<Food> foodList) {
+    public Sectors(Long id, String name,Members member, List<Food> foodList) {
         this.id = id;
         this.name = name;
+        this.member = member;
         this.foodList = foodList;
     }
 
