@@ -59,7 +59,7 @@ public class FoodServiceImpl implements FoodService{
         Page<Food> allWithCond = queryRepository.findAllWithCond(cond, pageRequest);
 
         List<FoodDto.Response> responseList = allWithCond.getContent().stream()
-                .filter(f->f.getSectors().getId()==sectorId)
+                .filter(food -> food.getSectors().getId()==sectorId)
                 .map(this::mappingToResponse)
                 .collect(Collectors.toList());
 
@@ -69,7 +69,15 @@ public class FoodServiceImpl implements FoodService{
     @Override
     public FoodDto.Response editFood(Long foodId, FoodDto.Patch patchDto) {
         Food food = foodRepository.findById(foodId).orElseThrow();
-        Food.Category category = getCategory(patchDto.getCategoryCode());
+        int categoryCode = patchDto.getCategoryCode();
+
+        int length = Food.Category.values().length;
+
+        Food.Category category = null;
+        if(categoryCode <= length && categoryCode >0){
+            category = getCategory(categoryCode);
+        }
+
         food.update(patchDto,category);
 
         return mappingToResponse(food);
@@ -116,6 +124,7 @@ public class FoodServiceImpl implements FoodService{
                 .expiration(food.getExpiration())
                 .category(food.getCategory())
                 .status(food.getFoodStatus())
+                .sectorId(food.getSectors().getId())
                 .build();
         return response;
     }

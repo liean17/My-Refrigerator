@@ -27,16 +27,17 @@ public class FoodController {
     }
 
     //음식 등록
-    @GetMapping("/add")
-    public String getAddForm(){
+    @GetMapping("/add/{sectorId}")
+    public String getAddForm(@PathVariable Long sectorId,Model model){
+        model.addAttribute("sectorId",sectorId);
         return "foods/addFood";
     }
 
-    @PostMapping("{sectorId}/add")
+    @PostMapping("/add/{sectorId}")
     public String addFood(FoodDto.Post postDto,@PathVariable Long sectorId, Model model){
         FoodDto.Response foodResponse = foodService.saveFood(postDto,sectorId);
         model.addAttribute("food",foodResponse);
-        return "foods/food";
+        return "redirect:/foods/sector/"+sectorId;
     }
 
     //음식 조회
@@ -52,26 +53,26 @@ public class FoodController {
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "size", defaultValue = "10") int size,
                              Model model, FoodSearchCond cond) {
-        PageRequest pageRequest = PageRequest.of(page, size);
+        PageRequest pageRequest = PageRequest.of(page-1, size);
         MultiResponseDto<FoodDto.Response> allFood = foodService.getAllFood(pageRequest, cond,sectorId);
         model.addAttribute("foods",allFood);
         return "foods/foods";
     }
 
     //음식 정보 수정
-    @GetMapping("/{foodId}/edit")
+    @GetMapping("/edit/{foodId}")
     public String getEditFood(@PathVariable Long foodId,Model model){
         FoodDto.Response foodResponse = foodService.getFood(foodId);
         model.addAttribute("food",foodResponse);
-        return "foods/editForm";
+        return "foods/editFood";
     }
 
     //Todo API
-    @PostMapping("/{foodId}/edit")
-    public String patchFood(@PathVariable Long foodId,@RequestBody FoodDto.Patch patchDto,Model model){
+    @PostMapping("/edit/{foodId}")
+    public String patchFood(@PathVariable Long foodId,FoodDto.Patch patchDto,Model model){
         FoodDto.Response foodResponse = foodService.editFood(foodId, patchDto);
         model.addAttribute("food",foodResponse);
-        return "foods/food";
+        return "redirect:/foods/sector/"+foodId;
     }
 
     //음식 삭제
