@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -128,12 +129,23 @@ public class FoodServiceImpl implements FoodService{
                 .build();
         return response;
     }
-
+    //TODO 효율적인 상태 계산식 필요
     private Food.FoodStatus setFoodStatus(LocalDateTime registration, LocalDateTime expiration) {
-        //TODO 유통기한과 등록일을 퍼센트로 계산하면 좋을 것 같다.
-        if(expiration.isBefore(registration)){
+        LocalDateTime now = LocalDateTime.now();
+
+        if(expiration.isBefore(now)){
             return Food.FoodStatus.EXPIRED;
         }
+
+        Duration registryMinusExpire = Duration.between(registration, expiration);
+        long days = registryMinusExpire.toDays();
+        Duration nowToExpire = Duration.between(now, expiration);
+        //등록일과 유통기한의 차이가 긴, 덜 민감한 식품
+        if(days>=7L){
+            if(nowToExpire.toDays()<7L) return Food.FoodStatus.IMMINENT;
+        }
+        //등록일과 유통기한의 차이가 짧은 민감한 식품
+        else if(nowToExpire.toDays()<3L) return Food.FoodStatus.IMMINENT;
         return Food.FoodStatus.NORMAL;
     }
 
