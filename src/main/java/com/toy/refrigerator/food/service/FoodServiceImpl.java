@@ -69,7 +69,15 @@ public class FoodServiceImpl implements FoodService{
     @Override
     public FoodDto.Response editFood(Long foodId, FoodDto.Patch patchDto) {
         Food food = foodRepository.findById(foodId).orElseThrow();
-        Food.Category category = getCategory(patchDto.getCategoryCode());
+        int categoryCode = patchDto.getCategoryCode();
+
+        int length = Food.Category.values().length;
+
+        Food.Category category = null;
+        if(categoryCode <= length && categoryCode >0){
+            category = getCategory(categoryCode);
+        }
+
         food.update(patchDto,category);
 
         return mappingToResponse(food);

@@ -24,7 +24,7 @@ class FoodServiceTest {
     FoodDto.Post postDto = FoodDto.Post.builder()
             .name("김치")
             .description("신토불이")
-            .expiration(LocalDateTime.of(2025,11,4,21,05))
+            .expiration(LocalDateTime.of(2025,11,4,21,05).toString())
             .categoryCode(10).build();
 
     @Test
@@ -47,7 +47,7 @@ class FoodServiceTest {
         FoodDto.Patch patchDto = FoodDto.Patch.builder()
                 .name("코울슬로")
                 .description("사실한국음식이었던거임!!")
-                .expiration(LocalDateTime.of(2030,11,11,11,11))
+                .expiration(LocalDateTime.of(2030,11,11,11,11).toString())
                 .categoryCode(9)
                 .build();
 

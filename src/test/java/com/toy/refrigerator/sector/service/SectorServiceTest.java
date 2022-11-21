@@ -30,7 +30,6 @@ class SectorServiceTest {
     }
     @Test
     void 섹터수정(){
-
         //when
         sectorService.createSector();
         sectorService.editSector(1L,"수정될이름");

@@ -60,19 +60,19 @@ public class FoodController {
     }
 
     //음식 정보 수정
-    @GetMapping("/{foodId}/edit")
+    @GetMapping("/edit/{foodId}")
     public String getEditFood(@PathVariable Long foodId,Model model){
         FoodDto.Response foodResponse = foodService.getFood(foodId);
         model.addAttribute("food",foodResponse);
-        return "foods/editForm";
+        return "foods/editFood";
     }
 
     //Todo API
-    @PostMapping("/{foodId}/edit")
-    public String patchFood(@PathVariable Long foodId,@RequestBody FoodDto.Patch patchDto,Model model){
+    @PostMapping("/edit/{foodId}")
+    public String patchFood(@PathVariable Long foodId,FoodDto.Patch patchDto,Model model){
         FoodDto.Response foodResponse = foodService.editFood(foodId, patchDto);
         model.addAttribute("food",foodResponse);
-        return "foods/food";
+        return "redirect:/foods/sector/"+foodId;
     }
 
     //음식 삭제

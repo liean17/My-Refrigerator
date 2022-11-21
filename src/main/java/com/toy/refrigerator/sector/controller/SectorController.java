@@ -32,11 +32,11 @@ public class SectorController {
     public String getEditPage(@PathVariable Long sectorId,Model model){
         SectorDto.Response response = sectorService.getSector(sectorId);
         model.addAttribute("sector",response);
-        return "sector/editSectors";
+        return "sector/editSector";
     }
 
     @PostMapping("/edit/{sectorId}")
-    public String editSector(@PathVariable Long sectorId, @RequestParam String name){
+    public String editSector(@PathVariable Long sectorId,String name){
         sectorService.editSector(sectorId,name);
         return "redirect:/sectors";
     }

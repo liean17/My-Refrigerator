@@ -29,7 +29,7 @@ class FoodTest {
                 .name("깍두기")
                 .categoryCode(9)
                 .description("깍두기")
-                .expiration(LocalDateTime.of(2030,1,27,0,0)).build();
+                .expiration(LocalDateTime.of(2030,1,27,0,0).toString()).build();
 
         kimchi.changeStatus(Food.FoodStatus.CONSUMED);
 
