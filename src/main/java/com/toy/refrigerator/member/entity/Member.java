@@ -12,18 +12,19 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @Entity
-public class Members {
+public class Member {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String email;
     private String password;
     private String nickname;
     private Status status = Status.ACTIVE;
-    @OneToMany(mappedBy = "members",cascade = CascadeType.ALL)
+    private Role role = Role.ROLE_MEMBER;
+    @OneToMany(mappedBy = "member",cascade = CascadeType.ALL)
     private List<Sectors> sectors = new ArrayList<>();
 
     @Builder
-    public Members(Long id, String email, String password, String nickname) {
+    public Member(Long id, String email, String password, String nickname) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -56,5 +57,19 @@ public class Members {
         Status(String description) {
             this.description = description;
         }
+    }
+
+    public enum Role{
+        ROLE_ADMIN("관리자"), ROLE_MEMBER("일반사용자");
+
+        private String description;
+
+        Role(String description) {
+            this.description = description;
+        }
+    }
+
+    public Role getRole() {
+        return role;
     }
 }

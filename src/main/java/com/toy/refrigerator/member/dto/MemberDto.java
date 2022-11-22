@@ -9,16 +9,29 @@ public class MemberDto {
 
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
-    public static class Post{
+    public static class Signup{
         private String email;
         private String password;
         private String nickname;
 
         @Builder
-        public Post(String email, String password, String nickname) {
+        public Signup(String email, String password, String nickname) {
             this.email = email;
             this.password = password;
             this.nickname = nickname;
+        }
+    }
+
+    @Getter
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    public static class Login{
+        private String email;
+        private String password;
+
+        @Builder
+        public Login(String email, String password) {
+            this.email = email;
+            this.password = password;
         }
     }
 
