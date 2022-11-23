@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8">
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+</head>
+<body>
+
+<div class="container" style="max-width: 600px">
+    <div class="py-5 text-center">
+        <h2>나의 냉장고</h2>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <button class="btn btn-primary float-end"
+                    onclick="location.href='loginForm.html'"
+                    th:onclick="|location.href='@{/login}'|"
+                    type="button">로그인</button>
+        </div>
+        <div class="col">
+            <button class="btn btn-primary float-end"
+                    onclick="location.href='signupForm.html'"
+                    th:onclick="|location.href='@{/signup}'|"
+                    type="button">회원가입</button>
+        </div>
+    </div>
+
+</div> <!-- /container -->
+
+</body>
+</html>
