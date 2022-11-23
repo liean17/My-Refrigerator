@@ -1,14 +1,21 @@
 package com.toy.refrigerator.member.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.toy.refrigerator.member.dto.MemberDto;
 import com.toy.refrigerator.member.service.MemberService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.net.http.HttpRequest;
 
 @Controller
 @RequiredArgsConstructor
@@ -26,7 +33,7 @@ public class MemberController {
     public String signup(MemberDto.Signup postDto, Model model){
          MemberDto.Response response = memberService.signup(postDto);
          model.addAttribute("member",response);
-         return "redirect:/sectors";
+         return "redirect:/";
     }
 
     //Login
@@ -36,9 +43,8 @@ public class MemberController {
     }
 
 //    @PostMapping("/login")
-//    public String login(MemberDto.Login postDto, Model model){
-//        //MemberDto.Response response = memberService.login(postDto);
-//        System.out.println("로그인 로직 동작");
+//    public String login(MemberDto.Login postDto, RedirectAttributes redirectAttributes, Model model) throws IOException {
+//        memberService.login(postDto);
 //        return "redirect:/sectors";
 //    }
 

@@ -25,12 +25,12 @@ public class MemberDto {
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class Login{
-        private String email;
+        private String username;
         private String password;
 
         @Builder
-        public Login(String email, String password) {
-            this.email = email;
+        public Login(String username, String password) {
+            this.username = username;
             this.password = password;
         }
     }

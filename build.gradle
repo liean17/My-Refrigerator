@@ -27,6 +27,7 @@ dependencies {
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	implementation 'com.querydsl:querydsl-jpa:5.0.0'
 	implementation 'com.auth0:java-jwt:4.2.1'
+	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
 
 	annotationProcessor(
 			"javax.persistence:javax.persistence-api",

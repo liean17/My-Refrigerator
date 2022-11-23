@@ -20,6 +20,15 @@ public class MemberService {
         return null;
     }
 
+    public void login(MemberDto.Login postDto) {
+        System.out.println("###########로그인 서비스 동작###########");
+        //Member byEmail = memberRepository.findByEmail(postDto.getUsername());
+        System.out.println("Username = " + postDto.getUsername());
+        System.out.println("Password = " + postDto.getPassword());
+        System.out.println("###########로그인  서비스  끝###########");
+        //return byEmail;
+    }
+
     private Member dtoToEntity(MemberDto.Signup postDto) {
         String encodePassword = passwordEncoder.encode(postDto.getPassword());
         return Member.builder()
@@ -28,6 +37,4 @@ public class MemberService {
                 .nickname(postDto.getNickname())
                 .build();
     }
-
-
 }

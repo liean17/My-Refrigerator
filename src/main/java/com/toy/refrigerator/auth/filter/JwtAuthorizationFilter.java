@@ -32,7 +32,6 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
         if(jwtHeader==null||!jwtHeader.startsWith("Bearer")){
             chain.doFilter(request,response);
-            System.out.println("헤더에 인증 정보가 없거나, 양식에 맞지 않은 요청입니다.");
             return;
         }
         String jwtToken = jwtHeader.replace("Bearer ", "");
@@ -49,8 +48,6 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
             System.out.println("유저 객체 저장 완료");
 
             chain.doFilter(request,response);
-        }else{
-            chain.doFilter(request, response);
         }
     }
 }

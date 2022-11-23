@@ -9,22 +9,31 @@
 <div class="container" style="max-width: 600px">
     <div class="py-5 text-center">
         <h2>나의 냉장고</h2>
+        <div sec:authorize="isAuthenticated()" >
+            <a th:text="'환영합니다! '+${nickname}+'님'" ></a>
+        </div>
     </div>
 
+
     <div class="row">
-        <div class="col">
+        <div class="col" sec:authorize="isAuthenticated()">
+            <button class="btn btn-primary float-end"
+                    th:onclick="|location.href='@{/logout}'|"
+                    type="button">로그아웃</button>
+        </div>
+        <div class="col" sec:authorize="!isAuthenticated()">
             <button class="btn btn-primary float-end"
                     onclick="location.href='loginForm.html'"
                     th:onclick="|location.href='@{/login}'|"
                     type="button">로그인</button>
         </div>
-        <div class="col">
+        <div class="col" sec:authorize="!isAuthenticated()">
             <button class="btn btn-primary float-end"
                     onclick="location.href='signupForm.html'"
                     th:onclick="|location.href='@{/signup}'|"
                     type="button">회원가입</button>
         </div>
-        <div class="col">
+        <div class="col" sec:authorize="isAuthenticated()">
             <button class="btn btn-primary float-end"
                     onclick="location.href='addPost.html'"
                     th:onclick="|location.href='@{/sectors/add}'|"

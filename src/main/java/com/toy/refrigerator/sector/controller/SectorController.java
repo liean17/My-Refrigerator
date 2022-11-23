@@ -1,11 +1,14 @@
 package com.toy.refrigerator.sector.controller;
 
+import com.toy.refrigerator.auth.principal.PrincipalDetails;
+import com.toy.refrigerator.auth.principal.PrincipalDetailsService;
 import com.toy.refrigerator.food.entity.Food;
 import com.toy.refrigerator.sector.dto.SectorDto;
 import com.toy.refrigerator.sector.entity.Sectors;
 import com.toy.refrigerator.sector.service.SectorService;
 import com.toy.refrigerator.utils.multidto.MultiResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +28,12 @@ public class SectorController {
     }
 
     @GetMapping
-    public String getSectors(Model model){
+    public String getSectors(Model model, @AuthenticationPrincipal PrincipalDetails principalDetails){
+        if(principalDetails!=null){
+            String nickname = principalDetails.getMember().getNickname();
+            System.out.println("nickname = " + nickname);
+            model.addAttribute("nickname",nickname);
+        }
         MultiResponseDto<SectorDto.Response> all = sectorService.getAll();
         model.addAttribute("sectors",all.getData());
         return "sector/sectors";
