@@ -40,7 +40,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
         if(email != null){
             System.out.println("정상 토큰 확인");
-            Member member = memberRepository.findByEmail(email);
+            Member member = memberRepository.findByEmail(email).orElseThrow();
             PrincipalDetails principalDetails = new PrincipalDetails(member);
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(principalDetails, null, principalDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
