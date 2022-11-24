@@ -23,7 +23,7 @@ public class PrincipalDetailsService implements UserDetailsService {
         System.out.println("username = " + username);
         System.out.println("########################");
 
-        Member member = memberRepository.findByEmail(username);
+        Member member = memberRepository.findByEmail(username).orElseThrow();
 
         return new PrincipalDetails(member);
     }

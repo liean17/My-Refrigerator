@@ -5,6 +5,7 @@ import com.toy.refrigerator.auth.filter.JwtAuthorizationFilter;
 import com.toy.refrigerator.auth.principal.PrincipalDetailsService;
 import com.toy.refrigerator.member.repository.MemberRepository;
 import com.toy.refrigerator.member.service.MemberService;
+import com.toy.refrigerator.oauth.Oauth2Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,6 +23,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     private final MemberRepository memberRepository;
+    private final Oauth2Service oauth2Service;
 
     @Bean
     public BCryptPasswordEncoder encoder(){return new BCryptPasswordEncoder();}
@@ -34,10 +36,11 @@ public class SecurityConfig {
         http
                 .authorizeRequests()
                 .antMatchers("/sectors/**","/foods/**").authenticated()
+                .antMatchers("/").not().authenticated()
                 .anyRequest().permitAll()
                 .and()
-                .formLogin().loginPage("/login")
-                .loginProcessingUrl("/login")
+                .formLogin()
+                .loginPage("/login")
                 .defaultSuccessUrl("/sectors")
                 .and()
                 .httpBasic().disable()
@@ -47,6 +50,12 @@ public class SecurityConfig {
         http
                 .logout()
                 .logoutUrl("/logout");
+        http
+                .oauth2Login()
+                .loginPage("/oauth2/authorization/google")
+                .defaultSuccessUrl("/sectors")
+                .userInfoEndpoint()
+                .userService(oauth2Service);
         return http.build();
     }
 

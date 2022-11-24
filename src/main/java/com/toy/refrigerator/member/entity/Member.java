@@ -47,6 +47,11 @@ public class Member {
         this.status = Status.SLEEP;
     }
 
+    public Member updateOAuth(String name){
+        this.nickname = name;
+        return this;
+    }
+
     public enum Status{
         ACTIVE("활동 중인 계정"),
         INACTIVE("비활성상태"),
