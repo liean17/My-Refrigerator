@@ -21,6 +21,12 @@
         <div class="col" sec:authorize="!isAuthenticated()">
             <button class="btn btn-primary float-end"
                     onclick="location.href='loginForm.html'"
+                    th:onclick="|location.href='@{/oauth2/authorization/kakao}'|"
+                    type="button">카카오 로그인</button>
+        </div>
+        <div class="col" sec:authorize="!isAuthenticated()">
+            <button class="btn btn-primary float-end"
+                    onclick="location.href='loginForm.html'"
                     th:onclick="|location.href='@{/login}'|"
                     type="button">로그인</button>
         </div>
