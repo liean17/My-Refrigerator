@@ -1,16 +1,15 @@
 package com.toy.refrigerator.food.repository;
 
-import lombok.AllArgsConstructor;
+import com.toy.refrigerator.food.entity.Food;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class FoodSearchCond {
 
-    private String name;
+    private String foodName;
+    private Food.FoodStatus status;
+    private Food.Category category;
 
 }
