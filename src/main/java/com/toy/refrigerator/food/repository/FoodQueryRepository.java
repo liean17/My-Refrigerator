@@ -34,7 +34,10 @@ public class FoodQueryRepository {
         return query
                 .select(food)
                 .from(food)
-                .where(likeFoodName(cond.getName()),
+                .where(
+                        likeFoodName(cond.getFoodName()),
+                        likeStatus(cond.getStatus()),
+                        likeCategory(cond.getCategory()),
                         food.foodStatus.ne(Food.FoodStatus.CONSUMED))
                 .offset(pageRequest.getOffset())
                 .limit(pageRequest.getPageSize())
@@ -45,7 +48,7 @@ public class FoodQueryRepository {
         return query.select(food.count())
                 .from(food)
                 .where(
-                        likeFoodName(cond.getName()),
+                        likeFoodName(cond.getFoodName()),
                         food.foodStatus.ne(Food.FoodStatus.CONSUMED)
                 );
     }
@@ -53,6 +56,20 @@ public class FoodQueryRepository {
     private BooleanExpression likeFoodName(String foodName){
         if(StringUtils.hasText(foodName)){
             return food.name.like("%"+foodName+"%");
+        }
+        return null;
+    }
+
+    private BooleanExpression likeStatus(Food.FoodStatus status){
+        if(status!=null){
+            return food.foodStatus.eq(status);
+        }
+        return null;
+    }
+
+    private BooleanExpression likeCategory(Food.Category category){
+        if(category!=null){
+            return food.category.eq(category);
         }
         return null;
     }

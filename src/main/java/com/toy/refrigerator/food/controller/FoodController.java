@@ -56,6 +56,7 @@ public class FoodController {
         PageRequest pageRequest = PageRequest.of(page-1, size);
         MultiResponseDto<FoodDto.Response> allFood = foodService.getAllFood(pageRequest, cond,sectorId);
         model.addAttribute("foods",allFood);
+        model.addAttribute("foodSearchCond",cond);
         return "foods/foods";
     }
 
