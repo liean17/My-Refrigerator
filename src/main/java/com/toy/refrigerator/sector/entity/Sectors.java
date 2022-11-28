@@ -23,6 +23,7 @@ public class Sectors {
     private Member member;
     @OneToMany(mappedBy = "sectors",cascade = CascadeType.ALL)
     private List<Food> foodList = new ArrayList<>();
+    private Status status = Status.ACTIVATE;
 
     @Builder
     public Sectors(Long id, String name,Member member, List<Food> foodList) {
@@ -54,7 +55,25 @@ public class Sectors {
         }
     }
 
+    @Getter
+    public enum Status{
+        ACTIVATE("활성"),
+        INACTIVE("비활성");
+
+        private String description;
+
+        Status(String description) {
+            this.description = description;
+        }
+
+    }
+
     public void setType(Type type) {
         this.type = type;
+    }
+    public void setMember(Member member){this.member = member;}
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }
