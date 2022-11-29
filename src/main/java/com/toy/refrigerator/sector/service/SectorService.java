@@ -1,10 +1,15 @@
 package com.toy.refrigerator.sector.service;
 
+import com.toy.refrigerator.auth.principal.PrincipalDetails;
+import com.toy.refrigerator.exception.BusinessLogicException;
+import com.toy.refrigerator.exception.ExceptionCode;
+import com.toy.refrigerator.member.entity.Member;
 import com.toy.refrigerator.sector.dto.SectorDto;
 import com.toy.refrigerator.sector.entity.Sectors;
 import com.toy.refrigerator.sector.repository.SectorRepository;
 import com.toy.refrigerator.utils.multidto.MultiResponseDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @RequiredArgsConstructor
 @Transactional
 @Service
@@ -19,15 +25,23 @@ public class SectorService {
 
     private final SectorRepository repository;
 
-    //TODO 회원정보입력
-    public void createSector() {
+    public void createSector(PrincipalDetails principalDetails) {
+        //TODO 예외처리
+        if(repository.findAll().stream()
+                .filter(s->s.getStatus().equals(Sectors.Status.ACTIVATE))
+                .collect(Collectors.toList()).size()>10) {
+            log.error("칸 수 초과");
+            return;
+        }
         Sectors sector = new Sectors();
-        System.out.println("sector = " + sector.getType());
+        Member member = principalDetails.getMember();
+
+        sector.setMember(member);
         repository.save(sector);
     }
 
     public SectorDto.Response getSector(Long id){
-        Sectors sectors = repository.findById(id).orElseThrow();
+        Sectors sectors = getSingleSector(id);
         return mappingToResponse(sectors);
     }
 
@@ -38,7 +52,9 @@ public class SectorService {
     }
 
     public void deleteSector(Long sectorId) {
-        repository.deleteById(sectorId);
+        Sectors singleSector = getSingleSector(sectorId);
+        singleSector.setStatus(Sectors.Status.INACTIVE);
+        //repository.deleteById(sectorId);
     }
 
     public MultiResponseDto<SectorDto.Response> getAll() {
@@ -55,5 +71,11 @@ public class SectorService {
                 .type(sectors.getType())
                 .build();
         return response;
+    }
+
+    private Sectors getSingleSector(Long id) {
+        Sectors sectors = repository.findById(id)
+                .orElseThrow(()->new BusinessLogicException(ExceptionCode.SECTOR_NOT_FOUND));
+        return sectors;
     }
 }

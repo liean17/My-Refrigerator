@@ -40,8 +40,8 @@ public class SectorController {
     }
 
     @GetMapping("/add")
-    public String addSector(){
-        sectorService.createSector();
+    public String addSector(@AuthenticationPrincipal PrincipalDetails principalDetails){
+        sectorService.createSector(principalDetails);
         return "redirect:/sectors";
     }
 
