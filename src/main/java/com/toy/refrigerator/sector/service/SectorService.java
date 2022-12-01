@@ -3,7 +3,10 @@ package com.toy.refrigerator.sector.service;
 import com.toy.refrigerator.auth.principal.PrincipalDetails;
 import com.toy.refrigerator.exception.BusinessLogicException;
 import com.toy.refrigerator.exception.ExceptionCode;
+import com.toy.refrigerator.food.entity.Food;
+import com.toy.refrigerator.food.repository.FoodRepository;
 import com.toy.refrigerator.member.entity.Member;
+import com.toy.refrigerator.sector.dto.FoodInfoDto;
 import com.toy.refrigerator.sector.dto.SectorDto;
 import com.toy.refrigerator.sector.entity.Sectors;
 import com.toy.refrigerator.sector.repository.SectorRepository;
@@ -23,11 +26,12 @@ import java.util.stream.Collectors;
 @Service
 public class SectorService {
 
-    private final SectorRepository repository;
+    private final SectorRepository sectorRepository;
+    private final FoodRepository foodRepository;
 
     public void createSector(PrincipalDetails principalDetails) {
         //TODO 예외처리
-        if(repository.findAll().stream()
+        if(sectorRepository.findAll().stream()
                 .filter(s->s.getStatus().equals(Sectors.Status.ACTIVATE))
                 .collect(Collectors.toList()).size()>10) {
             log.error("칸 수 초과");
@@ -37,7 +41,7 @@ public class SectorService {
         Member member = principalDetails.getMember();
 
         sector.setMember(member);
-        repository.save(sector);
+        sectorRepository.save(sector);
     }
 
     public SectorDto.Response getSector(Long id){
@@ -46,7 +50,7 @@ public class SectorService {
     }
 
     public void editSector(Long sectorId,SectorDto.Patch patchDto) {
-        Sectors sectors = repository.findById(sectorId).orElseThrow();
+        Sectors sectors = sectorRepository.findById(sectorId).orElseThrow();
         Sectors.Type type = Sectors.Type.valueOf(patchDto.getType());
         sectors.editSector(patchDto.getName(),type);
     }
@@ -58,7 +62,7 @@ public class SectorService {
     }
 
     public MultiResponseDto<SectorDto.Response> getAll() {
-        List<Sectors> sectorsList = repository.findAll();
+        List<Sectors> sectorsList = sectorRepository.findAll();
         List<SectorDto.Response> responseList = sectorsList.stream().map(this::mappingToResponse).collect(Collectors.toList());
         //Todo page 가 null 이면 오류남. 그렇다고 저래도 되는가
         return new MultiResponseDto<>(responseList,new PageImpl(responseList));
@@ -74,8 +78,21 @@ public class SectorService {
     }
 
     private Sectors getSingleSector(Long id) {
-        Sectors sectors = repository.findById(id)
+        Sectors sectors = sectorRepository.findById(id)
                 .orElseThrow(()->new BusinessLogicException(ExceptionCode.SECTOR_NOT_FOUND));
         return sectors;
+    }
+
+    public FoodInfoDto getFoodInfo() {
+        //TODO 조회 효율
+        int imminentCount = foodRepository.findAll()
+                .stream()
+                .filter(f->f.getFoodStatus().equals(Food.FoodStatus.IMMINENT))
+                .collect(Collectors.toList()).size();
+        int expiredCount = foodRepository.findAll()
+                .stream()
+                .filter(f->f.getFoodStatus().equals(Food.FoodStatus.EXPIRED))
+                .collect(Collectors.toList()).size();
+        return new FoodInfoDto(imminentCount,expiredCount);
     }
 }

@@ -5,7 +5,12 @@
     <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
 </head>
 <body>
-
+<div>
+    <div class="py-1 text-center" th:object="${foodInfo}">
+        <a th:text="'유통기한 임박 음식 '+*{imminentFoodCount}+'개    '"></a>
+        <a th:text="'유통기한 만료 음식 '+*{expiredFoodCount}+'개'"></a>
+    </div>
+</div>
 <div class="container" style="max-width: 600px">
     <div class="py-5 text-center">
         <h2>나의 냉장고</h2>

@@ -22,6 +22,8 @@ public class BatchScheduler {
     private final JobLauncher jobLauncher;
     private final BatchConfig batchConfig;
 
+    //1시간 마다
+    //초 분 시간 일 월 년
     @Scheduled(cron = "0 0 0/1 * * *")
     public void runJob(){
         log.info("스케쥴러 작동");

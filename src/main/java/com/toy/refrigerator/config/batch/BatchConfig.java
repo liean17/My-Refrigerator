@@ -3,7 +3,6 @@ package com.toy.refrigerator.config.batch;
 import com.toy.refrigerator.food.entity.Food;
 import com.toy.refrigerator.food.repository.FoodRepository;
 import com.toy.refrigerator.food.service.FoodServiceImpl;
-import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;

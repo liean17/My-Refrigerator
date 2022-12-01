@@ -1,8 +1,7 @@
 package com.toy.refrigerator.sector.controller;
 
 import com.toy.refrigerator.auth.principal.PrincipalDetails;
-import com.toy.refrigerator.auth.principal.PrincipalDetailsService;
-import com.toy.refrigerator.food.entity.Food;
+import com.toy.refrigerator.sector.dto.FoodInfoDto;
 import com.toy.refrigerator.sector.dto.SectorDto;
 import com.toy.refrigerator.sector.entity.Sectors;
 import com.toy.refrigerator.sector.service.SectorService;
@@ -35,7 +34,9 @@ public class SectorController {
             model.addAttribute("nickname",nickname);
         }
         MultiResponseDto<SectorDto.Response> all = sectorService.getAll();
+        FoodInfoDto foodInfo = sectorService.getFoodInfo();
         model.addAttribute("sectors",all.getData());
+        model.addAttribute("foodInfo",foodInfo);
         return "sector/sectors";
     }
 
