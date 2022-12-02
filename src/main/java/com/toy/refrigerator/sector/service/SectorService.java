@@ -62,7 +62,7 @@ public class SectorService {
     }
 
     public MultiResponseDto<SectorDto.Response> getAll(PrincipalDetails principalDetails) {
-        List<Sectors> sectorsList = repository.findAllByMember(principalDetails.getMember());
+        List<Sectors> sectorsList = sectorRepository.findAllByMember(principalDetails.getMember());
         List<SectorDto.Response> responseList = sectorsList.stream().filter(s->!s.getStatus().equals(Sectors.Status.INACTIVE)).map(this::mappingToResponse).collect(Collectors.toList());
         //Todo page 가 null 이면 오류남. 그렇다고 저래도 되는가
         return new MultiResponseDto<>(responseList,new PageImpl(responseList));
