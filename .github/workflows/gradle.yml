@@ -65,7 +65,7 @@ jobs:
       run: aws s3 cp --region ap-northeast-2 ./deploy-server.zip s3://$S3_BUCKET_NAME/deploy-server.zip
     - name: Code Deploy
       run: >
-        aws deploy create-deployment --application-name kdk-codedeploy
+        aws deploy create-deployment --application-name refrigerator
         --deployment-config-name CodeDeployDefault.AllAtOnce
         --deployment-group-name kdk-baepo-ec2
         --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=deploy-server.zip
