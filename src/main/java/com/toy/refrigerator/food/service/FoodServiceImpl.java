@@ -133,7 +133,7 @@ public class FoodServiceImpl implements FoodService{
         return response;
     }
     //TODO 효율적인 상태 계산식 필요
-    private Food.FoodStatus setFoodStatus(LocalDateTime registration, LocalDateTime expiration) {
+    public Food.FoodStatus setFoodStatus(LocalDateTime registration, LocalDateTime expiration) {
         LocalDateTime now = LocalDateTime.now();
 
         if(expiration.isBefore(now)){
