@@ -20,7 +20,7 @@ public class Food {
     private String name;
     private String description;
     private LocalDateTime registration = LocalDateTime.now();
-    private LocalDateTime expiration;
+    private LocalDateTime expiration;// = LocalDateTime.of(9999,12,31,11,59,59);
     @Enumerated(value = EnumType.STRING)
     private Category category;
     @Enumerated(value = EnumType.STRING)

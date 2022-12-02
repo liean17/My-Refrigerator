@@ -11,5 +11,5 @@ public interface FoodService {
     FoodDto.Response getFood(Long foodId);
     MultiResponseDto<FoodDto.Response> getAllFood(PageRequest pageRequest, FoodSearchCond cond,Long sectorId);
     FoodDto.Response editFood(Long foodId, FoodDto.Patch patchDto);
-    void deleteFood(Long foodId);
+    Long deleteFood(Long foodId);
 }

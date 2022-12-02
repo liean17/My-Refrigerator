@@ -7,6 +7,10 @@
         .container {
             max-width: 560px;
         }
+        .field-error {
+            border-color: #dc3545;
+            color: #dc3545;
+        }
     </style>
 </head>
 <body>
@@ -19,7 +23,7 @@
 
     <div>
         <label for="name">이름</label>
-        <input type="text" id="name" name="name" class="form-control">
+        <input type="text" id="name" name="name" class="form-control" placeholder="이름을 입력하세요">
     </div>
     <div>
         <label for="description">설명</label>
@@ -32,10 +36,12 @@
     <div>
         <div>분류</div>
         <label>
+            <div>카테고리는 필수입니다.</div>
             <select name="categoryCode" class="form-select">
                 <option th:each="category : ${categories}" th:value="${category.code()}"
                         th:text="${category.description}"></option>
             </select>
+
         </label>
     </div>
     <div>

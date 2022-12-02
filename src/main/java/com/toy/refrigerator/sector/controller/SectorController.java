@@ -34,7 +34,7 @@ public class SectorController {
             System.out.println("nickname = " + nickname);
             model.addAttribute("nickname",nickname);
         }
-        MultiResponseDto<SectorDto.Response> all = sectorService.getAll();
+        MultiResponseDto<SectorDto.Response> all = sectorService.getAll(principalDetails);
         model.addAttribute("sectors",all.getData());
         return "sector/sectors";
     }

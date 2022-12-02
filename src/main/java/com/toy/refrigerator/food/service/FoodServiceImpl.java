@@ -34,14 +34,8 @@ public class FoodServiceImpl implements FoodService{
 
         Food food = dtoToFood(postDto,sectorId);
 
-        //유통기한을 지정했다면
-        if (postDto.getExpiration()!=null){
-            LocalDateTime expirations = LocalDateTime.parse(postDto.getExpiration());
-            food.setExpiration(expirations);
-
-            Food.FoodStatus status = setFoodStatus(food.getRegistration(), food.getExpiration());
-            food.changeStatus(status);
-        }
+        Food.FoodStatus status = setFoodStatus(food.getRegistration(), food.getExpiration());
+        food.changeStatus(status);
 
         //저장
         Food saved = foodRepository.save(food);
@@ -85,9 +79,11 @@ public class FoodServiceImpl implements FoodService{
     }
 
     @Override
-    public void deleteFood(Long foodId) {
+    public Long deleteFood(Long foodId) {
+        Long sectorId = foodRepository.findById(foodId).orElseThrow().getSectors().getId();
         foodRepository.findById(foodId).orElseThrow()
                 .changeStatus(Food.FoodStatus.CONSUMED);
+        return sectorId;
     }
 
     public FoodDto.Response findByName(String name) {
@@ -107,9 +103,16 @@ public class FoodServiceImpl implements FoodService{
 
         Sectors sectors = sectorRepository.findById(sectorId).orElseThrow();
 
+        LocalDateTime time = LocalDateTime.of(9999,12,31,23,59);
+
+        if(!postDto.getExpiration().equals("")){
+            time = LocalDateTime.parse(postDto.getExpiration());
+        }
+
         Food food = Food.builder()
                 .name(postDto.getName())
                 .description(postDto.getDescription())
+                .expiration(time)
                 .category(category)
                 .sectors(sectors)
                 .build();
