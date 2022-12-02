@@ -16,7 +16,7 @@
             <div class="form-group mb-2">
                 <input type="text" th:field="*{foodName}" class="form-control" placeholder="음식명"/>
             </div>
-            <div class="form-group mx-sm-1 mb-2">
+            <div class="form-group mb-2">
                 <select th:field="*{status}" class="form-control">
                     <option value="">전체보기</option>
                     <option th:each="status : ${T(com.toy.refrigerator.food.entity.Food.FoodStatus).values()}"
