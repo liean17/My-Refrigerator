@@ -9,10 +9,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
-import java.util.List;
 
 @Controller
 @RequestMapping("/foods")
@@ -34,10 +35,13 @@ public class FoodController {
     }
 
     @PostMapping("/add/{sectorId}")
-    public String addFood(FoodDto.Post postDto,@PathVariable Long sectorId, Model model){
+    public String addFood(@Validated @ModelAttribute("food") FoodDto.Post postDto, BindingResult bindingResult, @PathVariable Long sectorId, Model model){
+        if(bindingResult.hasErrors()){
+            return "foods/addFood";
+        }
         FoodDto.Response foodResponse = foodService.saveFood(postDto,sectorId);
-        model.addAttribute("food",foodResponse);
-        return "redirect:/foods/sector/"+sectorId;
+        //model.addAttribute("food",foodResponse);
+        return "redirect:/foods/sector/"+ foodResponse.getFoodId();
     }
 
     //음식 조회
@@ -78,7 +82,8 @@ public class FoodController {
 
     //음식 삭제
     @PostMapping("/{foodId}")
-    public void deleteFood(@PathVariable Long foodId){
-        foodService.deleteFood(foodId);
+    public String deleteFood(@PathVariable Long foodId){
+        Long sectorId = foodService.deleteFood(foodId);
+        return "redirect:/foods/"+sectorId;
     }
 }

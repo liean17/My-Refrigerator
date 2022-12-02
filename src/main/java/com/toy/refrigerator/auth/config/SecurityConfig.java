@@ -36,7 +36,7 @@ public class SecurityConfig {
         http
                 .authorizeRequests()
                 .antMatchers("/sectors/**","/foods/**").authenticated()
-                .antMatchers("/").not().authenticated()
+                //.antMatchers("/").not().authenticated()
                 .anyRequest().permitAll()
                 .and()
                 .formLogin()
