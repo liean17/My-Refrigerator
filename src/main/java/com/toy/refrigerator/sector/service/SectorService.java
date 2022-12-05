@@ -30,15 +30,15 @@ public class SectorService {
     private final FoodRepository foodRepository;
 
     public void createSector(PrincipalDetails principalDetails) {
+        Member member = principalDetails.getMember();
         //TODO 예외처리
-        if(sectorRepository.findAll().stream()
+        if(sectorRepository.findAllByMember(member).stream()
                 .filter(s->s.getStatus().equals(Sectors.Status.ACTIVATE))
                 .collect(Collectors.toList()).size()>10) {
             log.error("칸 수 초과");
             return;
         }
         Sectors sector = new Sectors();
-        Member member = principalDetails.getMember();
 
         sector.setMember(member);
         sectorRepository.save(sector);
@@ -53,11 +53,13 @@ public class SectorService {
         Sectors sectors = sectorRepository.findById(sectorId).orElseThrow();
         Sectors.Type type = Sectors.Type.valueOf(patchDto.getType());
         sectors.editSector(patchDto.getName(),type);
+        log.info("섹터 ID {} 를 {} , {} 로 변경",sectorId,patchDto.getName(),patchDto.getType());
     }
 
     public void deleteSector(Long sectorId) {
         Sectors singleSector = getSingleSector(sectorId);
         singleSector.setStatus(Sectors.Status.INACTIVE);
+        log.info("섹터 ID {} 삭제",sectorId);
         //repository.deleteById(sectorId);
     }
 
