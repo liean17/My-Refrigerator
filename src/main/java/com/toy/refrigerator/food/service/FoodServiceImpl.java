@@ -1,5 +1,7 @@
 package com.toy.refrigerator.food.service;
 
+import com.toy.refrigerator.exception.BusinessLogicException;
+import com.toy.refrigerator.exception.ExceptionCode;
 import com.toy.refrigerator.food.dto.FoodDto;
 import com.toy.refrigerator.food.entity.Food;
 import com.toy.refrigerator.food.repository.FoodQueryRepository;
@@ -9,6 +11,7 @@ import com.toy.refrigerator.sector.entity.Sectors;
 import com.toy.refrigerator.sector.repository.SectorRepository;
 import com.toy.refrigerator.utils.multidto.MultiResponseDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -20,6 +23,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -39,22 +43,23 @@ public class FoodServiceImpl implements FoodService{
 
         //저장
         Food saved = foodRepository.save(food);
-
+        log.info("섹터 ID {}에서 식품 : {} 등록",sectorId,saved.getName());
         return mappingToResponse(saved);
     }
-    //Todo 예이예이예외처리예이예어어어컴온
+
     @Override
     public FoodDto.Response getFood(Long foodId) {
-        Food food = foodRepository.findById(foodId).orElseThrow();
+        Food food = getFoodById(foodId);
         return mappingToResponse(food);
     }
 
     @Override
     public MultiResponseDto<FoodDto.Response> getAllFood(PageRequest pageRequest, FoodSearchCond cond,Long sectorId) {
-        Page<Food> allWithCond = queryRepository.findAllWithCond(cond, pageRequest);
+        log.info("섹터 {} 에서 식품 전체 조회 실행",sectorId);
+        Page<Food> allWithCond = queryRepository.findAllWithCond(cond, pageRequest,sectorId);
 
         List<FoodDto.Response> responseList = allWithCond.getContent().stream()
-                .filter(food -> food.getSectors().getId()==sectorId)
+                //.filter(food -> food.getSectors().getId()==sectorId)
                 .map(this::mappingToResponse)
                 .collect(Collectors.toList());
 
@@ -63,7 +68,8 @@ public class FoodServiceImpl implements FoodService{
 
     @Override
     public FoodDto.Response editFood(Long foodId, FoodDto.Patch patchDto) {
-        Food food = foodRepository.findById(foodId).orElseThrow();
+        log.info("식품 ID {} 수정 요청",foodId);
+        Food food = getFoodById(foodId);
         int categoryCode = patchDto.getCategoryCode();
 
         int length = Food.Category.values().length;
@@ -80,10 +86,18 @@ public class FoodServiceImpl implements FoodService{
 
     @Override
     public Long deleteFood(Long foodId) {
-        Long sectorId = foodRepository.findById(foodId).orElseThrow().getSectors().getId();
-        foodRepository.findById(foodId).orElseThrow()
+        log.info("식품 ID {} 삭제 요청",foodId);
+        Long sectorId = getFoodById(foodId).getSectors().getId();
+        getFoodById(foodId)
                 .changeStatus(Food.FoodStatus.CONSUMED);
+        log.info("식품 ID {}를 비활성화 했습니다.",foodId);
         return sectorId;
+    }
+
+    private Food getFoodById(Long foodId) {
+        Food food = foodRepository.findById(foodId)
+                .orElseThrow(()->new BusinessLogicException(ExceptionCode.FOOD_NOT_FOUND));
+        return food;
     }
 
     public FoodDto.Response findByName(String name) {
@@ -101,7 +115,8 @@ public class FoodServiceImpl implements FoodService{
             category = getCategory(categoryCode);
         }
 
-        Sectors sectors = sectorRepository.findById(sectorId).orElseThrow();
+        Sectors sectors = sectorRepository.findById(sectorId)
+                .orElseThrow(()->new BusinessLogicException(ExceptionCode.SECTOR_NOT_FOUND));
 
         LocalDateTime time = LocalDateTime.of(9999,12,31,23,59);
 

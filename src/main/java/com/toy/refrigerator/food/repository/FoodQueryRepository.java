@@ -24,17 +24,18 @@ public class FoodQueryRepository {
         this.query = new JPAQueryFactory(em);
     }
 
-    public Page<Food> findAllWithCond(FoodSearchCond cond, PageRequest pageRequest){
-        List<Food> content = getFindAllQuery(cond,pageRequest);
+    public Page<Food> findAllWithCond(FoodSearchCond cond, PageRequest pageRequest,Long sectorId){
+        List<Food> content = getFindAllQuery(cond,pageRequest,sectorId);
         JPAQuery<Long> countQuery = getCountQuery(cond);
         return PageableExecutionUtils.getPage(content,pageRequest,countQuery::fetchOne);
     }
 
-    public List<Food> getFindAllQuery(FoodSearchCond cond,PageRequest pageRequest){
+    public List<Food> getFindAllQuery(FoodSearchCond cond,PageRequest pageRequest,Long sectorId){
         return query
                 .select(food)
                 .from(food)
                 .where(
+                        food.sectors.id.eq(sectorId),
                         likeFoodName(cond.getFoodName()),
                         likeStatus(cond.getStatus()),
                         likeCategory(cond.getCategory()),

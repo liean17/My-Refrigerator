@@ -4,9 +4,11 @@ import com.toy.refrigerator.member.dto.MemberDto;
 import com.toy.refrigerator.member.entity.Member;
 import com.toy.refrigerator.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class MemberService {
@@ -15,6 +17,7 @@ public class MemberService {
     private final BCryptPasswordEncoder passwordEncoder;
 
     public MemberDto.Response signup(MemberDto.Signup postDto) {
+        log.info("{}의 가입 요청",postDto.getNickname());
         Member member = dtoToEntity(postDto);
         memberRepository.save(member);
         return null;
