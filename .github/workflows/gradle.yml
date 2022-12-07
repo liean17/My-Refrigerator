@@ -15,7 +15,7 @@ permissions:
   contents: read
 
 env:
-  S3_BUCKET_NAME: kdk-first-s3
+  S3_BUCKET_NAME: kdk-refrigerator-s3
   RESOURCE_PATH: ./src/main/resources/application.yml
 
 jobs:
