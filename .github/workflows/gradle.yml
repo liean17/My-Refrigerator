@@ -67,5 +67,5 @@ jobs:
         run: >
           aws deploy create-deployment --application-name refrigerator
           --deployment-config-name CodeDeployDefault.AllAtOnce
-          --deployment-group-name kdk-baepo-ec2
+          --deployment-group-name my-refrigerator
           --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=deploy-server.zip
