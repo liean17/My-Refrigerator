@@ -1,5 +1,5 @@
 # My-Refrigerator
-냉장고 내 음식 관리 애플리케이션. 
+냉장고 내 음식 관리 애플리케이션.  
 [배포 주소](https://kdksandbox.shop)
 
 ### ERD
