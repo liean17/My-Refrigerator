@@ -8,6 +8,13 @@
 - 냉장고에 음식을 등록할 수 있습니다.
 - 냉장고는 음식 정보에 포함된 유통기한을 사용해서 유통기한을 관리해줍니다.
 
-### 목표
-- 유닛테스트 중심으로 코드를 작성
-- 웹 소켓, 스케쥴러, 배치 사용
+### 사용기술
+ - Java 17
+ - Spring Boot 5.3
+ - Thymeleaf
+ - Spring Data JPA
+ - QueryDSL
+ - MySQL 8.0.3
+ - Spring Security
+ - Spring Batch
+ - AWS EC2
