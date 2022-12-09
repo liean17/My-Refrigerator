@@ -85,16 +85,18 @@ public class SectorService {
         return sectors;
     }
 
-    public FoodInfoDto getFoodInfo() {
+    public FoodInfoDto getFoodInfo(PrincipalDetails principalDetails) {
+        Member member = principalDetails.getMember();
+        List<Food> allBySectorsMember = foodRepository.findAllBySectors_Member(member);
+
         //TODO 조회 효율
-        int imminentCount = foodRepository.findAll()
-                .stream()
+        int imminentCount = allBySectorsMember.stream()
                 .filter(f->f.getFoodStatus().equals(Food.FoodStatus.IMMINENT))
                 .collect(Collectors.toList()).size();
-        int expiredCount = foodRepository.findAll()
-                .stream()
+        int expiredCount = allBySectorsMember.stream()
                 .filter(f->f.getFoodStatus().equals(Food.FoodStatus.EXPIRED))
                 .collect(Collectors.toList()).size();
+
         return new FoodInfoDto(imminentCount,expiredCount);
     }
 }

@@ -30,11 +30,10 @@ public class SectorController {
     public String getSectors(Model model, @AuthenticationPrincipal PrincipalDetails principalDetails){
         if(principalDetails!=null){
             String nickname = principalDetails.getMember().getNickname();
-            System.out.println("nickname = " + nickname);
             model.addAttribute("nickname",nickname);
         }
         MultiResponseDto<SectorDto.Response> all = sectorService.getAll(principalDetails);
-        FoodInfoDto foodInfo = sectorService.getFoodInfo();
+        FoodInfoDto foodInfo = sectorService.getFoodInfo(principalDetails);
         model.addAttribute("sectors",all.getData());
         model.addAttribute("foodInfo",foodInfo);
         return "sector/sectors";
